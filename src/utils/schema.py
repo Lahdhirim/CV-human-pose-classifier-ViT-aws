@@ -7,6 +7,7 @@ class MetricSchema:
     PRECISION = "precision"
     RECALL = "recall"
     F1_SCORE = "f1_score"
+    CLASS = "class"
 
 
 class SavingSchema:

@@ -11,6 +11,7 @@ from datasets import load_from_disk
 from src.config_loaders.testing_config_loader import TestingConfig
 from src.base_pipeline import BasePipeline
 from src.utils.schema import BatchSchema, SavingSchema
+from src.utils.utils_toolbox import save_classification_results_to_excel
 from src.evaluators.classification_metrics import compute_results
 
 
@@ -88,33 +89,14 @@ class TestingPipeline(BasePipeline):
 
         # Compute classifications metrics and save results into Excel file
         print(f"{Fore.YELLOW}Calculating classifications metrics...{Style.RESET_ALL}")
-        metrics_df, cm_df = compute_results(labels_list, preds, labels)
-        with pd.ExcelWriter(
-            self.config.metrics_output_file, engine="openpyxl"
-        ) as writer:
-
-            metrics_df.to_excel(writer, sheet_name="metrics", index=False)
-
-            cm_df.index.name = "Ground Truth ↓ / Prediction →"
-            cm_styled = (
-                cm_df.style.background_gradient(cmap="Blues")
-                .set_table_styles(
-                    [
-                        {
-                            "selector": "th",
-                            "props": [
-                                ("font-weight", "bold"),
-                                ("text-align", "center"),
-                            ],
-                        }
-                    ]
-                )
-                .set_properties(**{"text-align": "center"})
-            )
-            cm_styled.to_excel(writer, sheet_name="confusion_matrix")
-
-        print(
-            f"{Fore.CYAN}Evaluation results saved to {self.config.metrics_output_file}{Style.RESET_ALL}"
+        metrics_df, cm_df, per_class_acc_df = compute_results(
+            labels_list, preds, labels
+        )
+        save_classification_results_to_excel(
+            metrics_df=metrics_df,
+            cm_df=cm_df,
+            per_class_acc_df=per_class_acc_df,
+            output_file=self.config.metrics_output_file,
         )
 
         print(f"{Fore.GREEN}Testing pipeline completed successfully!{Style.RESET_ALL}")

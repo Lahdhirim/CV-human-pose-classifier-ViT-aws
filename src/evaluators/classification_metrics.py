@@ -32,4 +32,13 @@ def compute_results(
     cm = confusion_matrix(y_true, y_pred)
     cm_df: pd.DataFrame = pd.DataFrame(cm, index=labels, columns=labels)
 
-    return metrics_df, cm_df
+    # Accuracy Per Class
+    per_class_acc = cm.diagonal() / cm.sum(axis=1)
+    per_class_acc_df = pd.DataFrame(
+        {MetricSchema.CLASS: labels, MetricSchema.ACCURACY: per_class_acc}
+    )
+    per_class_acc_df = per_class_acc_df.sort_values(
+        by=MetricSchema.ACCURACY, ascending=False
+    ).reset_index(drop=True)
+
+    return metrics_df, cm_df, per_class_acc_df
