@@ -22,10 +22,6 @@ class PushModelS3Config(BaseModel):
 class TestingConfig(BaseModel):
     input_dir: str = Field(..., description="Path to load the test data file")
     trained_model_path: str = Field(..., description="Path to load the trained model")
-    model_name: str = Field(
-        ...,
-        description="The model to use for image classification (has to be the same used during training)",
-    )
     metrics_output_file: str = Field(
         ..., description="Path to save the performance metrics"
     )

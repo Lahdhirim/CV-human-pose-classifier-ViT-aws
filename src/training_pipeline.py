@@ -4,7 +4,7 @@ from colorama import Fore, Style
 from datasets import load_from_disk
 from src.modeling.model_builder import ModelBuilder
 from transformers import TrainingArguments, Trainer
-from src.utils.schema import BatchSchema, MetricSchema
+from src.utils.schema import BatchSchema, MetricSchema, SavingSchema
 from src.evaluators.accuracy import compute_accuracy
 from src.utils.utils_toolbox import (
     clean_checkpoints,
@@ -119,7 +119,7 @@ class TrainingPipeline(BasePipeline):
         # Save the best model and _transforms for Testing and Inference
         trainer.save_model(self.config.directories_config.best_model_path)
         transforms_path = os.path.join(
-            self.config.directories_config.best_model_path, "transforms.pkl"
+            self.config.directories_config.best_model_path, SavingSchema.TRANSFORMS_PKL
         )
         with open(transforms_path, "wb") as f:
             pickle.dump(_transforms, f)
