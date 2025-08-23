@@ -27,9 +27,7 @@ class TestingPipeline(BasePipeline):
         print(f"{Fore.YELLOW}Loading test data from specified path...{Style.RESET_ALL}")
         input_dir = self.config.input_dir
         try:
-            test_dataset = (
-                load_from_disk(f"{input_dir}").shuffle(seed=42).select(range(50))
-            )
+            test_dataset = load_from_disk(f"{input_dir}")
         except FileNotFoundError:
             raise FileNotFoundError(
                 f"{Fore.RED}Could not find test dataset at {input_dir}{Style.RESET_ALL}"

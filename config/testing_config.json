@@ -1,6 +1,6 @@
 {
     "input_dir": "data/test",
-    "trained_model_path": "trained_models/best_model_15_0",
+    "trained_model_path": "trained_models/best_model_20_12",
     "metrics_output_file": "data/output/performance_metrics.xlsx",
     "push_model_s3": {
         "enabled": true,
