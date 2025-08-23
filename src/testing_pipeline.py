@@ -13,6 +13,7 @@ from src.base_pipeline import BasePipeline
 from src.utils.schema import BatchSchema, SavingSchema
 from src.utils.utils_toolbox import save_classification_results_to_excel
 from src.evaluators.classification_metrics import compute_results
+from src.aws_services.s3_service import S3Manager
 
 
 class TestingPipeline(BasePipeline):
@@ -96,5 +97,52 @@ class TestingPipeline(BasePipeline):
             per_class_acc_df=per_class_acc_df,
             output_file=self.config.metrics_output_file,
         )
+
+        # Push the model to S3 Bucket if it reaches the required performances
+        metrics = metrics_df.iloc[0].to_dict()
+        if self.config.push_model_s3:
+            push_model_s3_config = self.config.push_model_s3
+            if push_model_s3_config.enabled:
+                if len(push_model_s3_config.conditions) > 0:
+                    print(
+                        f"{Fore.YELLOW}Verifying conditions to push model to S3 bucket...{Style.RESET_ALL}"
+                    )
+                    model_valid = True
+                    for condition in push_model_s3_config.conditions:
+                        assert (
+                            condition.metric in metrics
+                        ), f"Metric {condition.metric} not found in the metrics dictionary {list(metrics.keys())}."
+                        if metrics[condition.metric] < condition.threshold:
+                            model_valid = False
+                            print(
+                                f"{Fore.RED}Metric {condition.metric} ({metrics[condition.metric]}) does not meet the threshold of {condition.threshold}.\nModel will not be pushed to S3 bucket...{Style.RESET_ALL}"
+                            )
+                            break
+
+                    if model_valid:
+                        print(
+                            f"{Fore.GREEN}Model validation passed. Pushing model to S3 bucket...{Style.RESET_ALL}"
+                        )
+                        s3_manager = S3Manager(
+                            bucket_name=push_model_s3_config.bucket_name
+                        )
+                        s3_manager.create_bucket_if_not_exists()
+                        s3_manager.upload_directory(
+                            local_directory_path=self.config.trained_model_path,
+                            s3_prefix=push_model_s3_config.prefix,
+                        )
+
+                else:
+                    print(
+                        f"{Fore.RED}No conditions specified for pushing model to S3 bucket. Skipping the push operation...{Style.RESET_ALL}"
+                    )
+            else:
+                print(
+                    f"{Fore.RED}Pushing model to S3 bucket is disabled. Skipping the push operation...{Style.RESET_ALL}"
+                )
+        else:
+            print(
+                f"{Fore.YELLOW}Pushing model to S3 bucket is not configured. Skipping the push operation...{Style.RESET_ALL}"
+            )
 
         print(f"{Fore.GREEN}Testing pipeline completed successfully!{Style.RESET_ALL}")

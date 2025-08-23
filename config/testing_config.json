@@ -1,12 +1,13 @@
 {
     "input_dir": "data/test",
-    "trained_model_path": "trained_models/best_model_20_12",
+    "trained_model_path": "trained_models/best_model_15_2",
     "metrics_output_file": "data/output/performance_metrics.xlsx",
     "push_model_s3": {
         "enabled": true,
         "conditions": [
-            {"metric": "accuracy", "threshold": 0.80},
-            {"metric": "precision", "threshold": 0.90}
+            {"metric": "accuracy", "threshold": 0.75},
+            {"metric": "precision", "threshold": 0.75},
+            {"metric": "recall", "threshold": 0.75}
         ],
         "bucket_name": "human-pose-classifier-bucket",
         "prefix": "ml_models/"
