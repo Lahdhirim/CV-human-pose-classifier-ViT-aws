@@ -1,9 +1,4 @@
 from pydantic import BaseModel
-from pydantic import HttpUrl
-
-
-class ImageDataInput(BaseModel):
-    url: HttpUrl
 
 
 class ImageDataOutput(BaseModel):

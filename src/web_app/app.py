@@ -1,5 +1,5 @@
 import uvicorn
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile, File, Form
 
 import time
 from colorama import Fore, Style
@@ -15,7 +15,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")
 from transformers import AutoModelForImageClassification
 import torch
 
-from src.web_app.data_model import ImageDataInput, ImageDataOutput
+from src.web_app.data_model import ImageDataOutput
 from src.aws_services.s3_service import S3Manager
 from src.config_loaders.inference_config_loader import inference_config_loader
 from src.utils.schema import SavingSchema
@@ -72,27 +72,45 @@ def load_model():
 
 
 @app.post("/api/v1/pose_classifier")
-def pose_classifier(data: ImageDataInput) -> ImageDataOutput:
-    start = time.time()
-    image_url = str(data.url)
+def pose_classifier(
+    url: str | None = Form(None), file: UploadFile = File(None)
+) -> ImageDataOutput:
 
-    # Load image
-    try:
-        response = requests.get(image_url, timeout=5)
-        response.raise_for_status()
-        img = Image.open(BytesIO(response.content)).convert("RGB")
-    except requests.exceptions.Timeout:
+    if not url and not file:
         raise HTTPException(
-            status_code=408, detail=f"Timeout while fetching image: {image_url}"
+            status_code=400, detail="Provide either an image URL or upload a file."
         )
-    except requests.exceptions.RequestException as e:
-        raise HTTPException(
-            status_code=400, detail=f"Error fetching image {image_url}: {e}"
-        )
-    except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"Error processing image {image_url}: {e}"
-        )
+
+    start = time.time()
+
+    # --- Case 1: Image from URL ---
+    if url:
+
+        try:
+            response = requests.get(url, timeout=5)
+            response.raise_for_status()
+            img = Image.open(BytesIO(response.content)).convert("RGB")
+        except requests.exceptions.Timeout:
+            raise HTTPException(
+                status_code=408, detail=f"Timeout while fetching image: {url}"
+            )
+        except requests.exceptions.RequestException as e:
+            raise HTTPException(
+                status_code=400, detail=f"Error fetching image {url}: {e}"
+            )
+        except Exception as e:
+            raise HTTPException(
+                status_code=500, detail=f"Error processing image {url}: {e}"
+            )
+
+    # --- Case 2: Image from uploaded file ---
+    elif file:
+        try:
+            img = Image.open(file.file).convert("RGB")
+        except Exception as e:
+            raise HTTPException(
+                status_code=400, detail=f"Error reading uploaded file: {e}"
+            )
 
     # Apply transforms
     torch.manual_seed(42)  # fix seed to ensure reproductibility

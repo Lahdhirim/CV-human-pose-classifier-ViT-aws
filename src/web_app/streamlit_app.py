@@ -9,15 +9,21 @@ API_URL = "http://localhost:8502/api/v1/pose_classifier"
 st.set_page_config(page_title="Human Pose Classification", page_icon="🧍")
 st.title("🧍Human Pose Classification App")
 
-# Initialize session state for processing status
-if "is_processing" not in st.session_state:
-    st.session_state.is_processing = False
+# --- Choose input method ---
+input_method = st.radio("Choose input method:", ["Image URL", "Upload File"])
 
-# Input URL
-image_url = st.text_input("Enter the image URL:")
+image_url = None
+uploaded_file = None
 
-# Predict Button is disabled if no URL or if currently processing
-button_disabled = not image_url
+if input_method == "Image URL":
+    image_url = st.text_input("Enter the image URL:")
+elif input_method == "Upload File":
+    uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
+
+# Disable predict button if nothing is provided
+button_disabled = (input_method == "Image URL" and not image_url) or (
+    input_method == "Upload File" and not uploaded_file
+)
 
 if st.button("Predict", disabled=button_disabled):
 
@@ -25,17 +31,22 @@ if st.button("Predict", disabled=button_disabled):
 
         # Load image preview
         try:
-            response = requests.get(image_url, timeout=5)
-            response.raise_for_status()
-            img = Image.open(requests.get(image_url, stream=True).raw)
+            if image_url:
+                response = requests.get(image_url, timeout=5)
+                response.raise_for_status()
+                img = Image.open(requests.get(image_url, stream=True).raw)
+            else:
+                img = Image.open(uploaded_file)
             st.image(img, caption="Input Image", use_container_width=True)
         except Exception as e:
             st.error(f"Error loading image: {e}")
             st.stop()
 
         # Call FastAPI for prediction
+        files = {"file": uploaded_file.getvalue()} if uploaded_file else None
+        data = {"url": image_url} if image_url else None
         try:
-            response = requests.post(API_URL, json={"url": image_url})
+            response = requests.post(API_URL, data=data, files=files)
             response.raise_for_status()
             result = response.json()
         except Exception as e:
