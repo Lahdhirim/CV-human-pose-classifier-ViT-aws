@@ -11,9 +11,7 @@ pydantic==2.11.7
 python-multipart==0.0.20
 scikit-learn==1.7.1
 streamlit==1.49.0
-torch==2.8.0+cu126
-torchaudio==2.8.0+cu126
-torchvision==0.23.0+cu126
+torch
 tqdm==4.67.1
 transformers==4.55.2
 uvicorn==0.35.0
