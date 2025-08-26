@@ -46,3 +46,25 @@ class S3Manager:
                 print(
                     f"Uploaded: {local_file_path} --> s3://{self.bucket_name}/{s3_key}"
                 )
+
+    def download_directory(self, s3_prefix: str, local_directory_path: str) -> None:
+        """
+        Download all files from a given S3 prefix to a local directory.
+
+        Args:
+            s3_prefix (str): The prefix/folder in the S3 bucket to download from.
+            local_directory_path (str): The local directory where files will be saved.
+        """
+        os.makedirs(local_directory_path, exist_ok=True)
+        paginator = self.s3.get_paginator("list_objects_v2")
+
+        for result in paginator.paginate(Bucket=self.bucket_name, Prefix=s3_prefix):
+            for file_obj in result.get("Contents", []):
+                s3_key = file_obj["Key"]
+                rel_path = os.path.relpath(s3_key, s3_prefix)
+                local_file_path = os.path.join(local_directory_path, rel_path)
+                os.makedirs(os.path.dirname(local_file_path), exist_ok=True)
+                self.s3.download_file(self.bucket_name, s3_key, local_file_path)
+                print(
+                    f"Downloaded: s3://{self.bucket_name}/{s3_key} --> {local_file_path}"
+                )
