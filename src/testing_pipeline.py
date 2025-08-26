@@ -63,6 +63,7 @@ class TestingPipeline(BasePipeline):
 
         # Apply transformations on test set
         def apply_transforms(batch: dict) -> dict:
+            torch.manual_seed(42)  # fix seed to ensure reproductibility
             batch[BatchSchema.PIXEL_VALUES] = [
                 _transforms(img.convert("RGB")) for img in batch["image"]
             ]

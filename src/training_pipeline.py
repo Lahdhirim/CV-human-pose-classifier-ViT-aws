@@ -12,6 +12,7 @@ from src.utils.utils_toolbox import (
 )
 import pickle
 import os
+import torch
 
 
 class TrainingPipeline(BasePipeline):
@@ -59,6 +60,7 @@ class TrainingPipeline(BasePipeline):
 
         # Image preprocessing
         def apply_transforms(batch: dict) -> dict:
+            torch.manual_seed(42)  # fix seed to ensure reproductibility
             batch[BatchSchema.PIXEL_VALUES] = [
                 _transforms(img.convert("RGB")) for img in batch["image"]
             ]

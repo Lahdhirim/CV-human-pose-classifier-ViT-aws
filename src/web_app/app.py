@@ -95,6 +95,7 @@ def pose_classifier(data: ImageDataInput) -> ImageDataOutput:
         )
 
     # Apply transforms
+    torch.manual_seed(42)  # fix seed to ensure reproductibility
     pixel_values = _transforms(img).unsqueeze(0)
 
     # Predict
