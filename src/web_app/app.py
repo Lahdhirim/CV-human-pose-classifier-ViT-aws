@@ -41,13 +41,13 @@ def load_model():
     config = inference_config_loader(config_path=config_path)
 
     # Download model from S3
-    # s3_manager = S3Manager(bucket_name=config.bucket_name)
-    # print(
-    #     f"{Fore.YELLOW}Downloading trained models from S3 bucket {config.bucket_name}...{Style.RESET_ALL}"
-    # )
-    # s3_manager.download_directory(
-    #     s3_prefix=config.s3_model_prefix, local_directory_path=config.local_model_dir
-    # )
+    s3_manager = S3Manager(bucket_name=config.bucket_name)
+    print(
+        f"{Fore.YELLOW}Downloading trained models from S3 bucket {config.bucket_name}...{Style.RESET_ALL}"
+    )
+    s3_manager.download_directory(
+        s3_prefix=config.s3_model_prefix, local_directory_path=config.local_model_dir
+    )
 
     # Load model
     print(
