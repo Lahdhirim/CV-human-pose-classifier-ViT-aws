@@ -1,4 +1,5 @@
 import argparse
+import subprocess
 
 # Import config loaders and pipeline classes for each task
 from src.config_loaders.preprocessing_config_loader import load_preprocessing_config
@@ -16,10 +17,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Human Pose Classifier")
     parser.add_argument(
         "mode",
-        choices=["preprocess_data", "train", "test"],
+        choices=["preprocess_data", "train", "test", "inference"],
         default="preprocess_data",
         nargs="?",
-        help="Choose mode: preprocess_data, train or test",
+        help="Choose mode: preprocess_data, train, test or inference",
     )
     args = parser.parse_args()
 
@@ -47,5 +48,11 @@ if __name__ == "__main__":
         testing_pipeline = TestingPipeline(config=testing_config)
         testing_pipeline.run()
 
+    elif args.mode == "inference":
+        # Run the Streamlit app
+        subprocess.run(["streamlit", "run", "src/web_app/streamlit_app.py"])
+
     else:
-        print("Invalid mode. Please choose 'preprocess_data', 'train' or 'test'.")
+        print(
+            "Invalid mode. Please choose 'preprocess_data', 'train' 'test', or 'inference'."
+        )
