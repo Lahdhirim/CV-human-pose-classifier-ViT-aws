@@ -25,7 +25,7 @@ Public link: https://cv-human-pose-classifier-vit.streamlit.app/
 4. Create an EC2 instance with the following specifications:
     - **AMI**: Deep Learning OSS Nvidia Driver AMI GPU PyTorch 2.7 (Ubuntu 22.04)
     - **Instance type**: `t3.medium` (`t2.micro` could result in a timeout during the execution of the Streamlit application)
-    - **Key Pair**: Use the key pair you download to connect via SSH
+    - **Key Pair**: Use the key pair you downloaded to connect via SSH
     - **Security Group**:
         - Allow inbound rules for ports: `22`, `80`, `8501`, `8502` (all TCP)
     - **Storage**: 120 GiB (gp3)
@@ -67,7 +67,7 @@ Public link: https://cv-human-pose-classifier-vit.streamlit.app/
     ```bash
     streamlit run src/web_app/interface.py
     ```
-    Normally, at this stage and if everything works fine, the application is accessible at the address  `http://<public IPv4 address>:8501`
+    Normally, at this stage, if everything works fine, the application is accessible at `http://<public IPv4 address>:8501`
 
 7. Automatically launch Streamlit on instance reboot:
     - Create the startup script:
@@ -93,7 +93,7 @@ Public link: https://cv-human-pose-classifier-vit.streamlit.app/
         ```bash
         crontab -e
         ```
-        Add the following line at the end of file:
+        Add the following line at the end of the file:
         ```bash
         @reboot /home/ubuntu/start_streamlit.sh
         ```
