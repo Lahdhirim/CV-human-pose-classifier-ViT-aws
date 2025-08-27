@@ -139,4 +139,4 @@ def pose_classifier(
 
 
 if __name__ == "__main__":
-    uvicorn.run(app="app:app", port=8502, reload=True, host="0.0.0.0")
+    uvicorn.run(app="server:app", port=8502, reload=True, host="0.0.0.0")
