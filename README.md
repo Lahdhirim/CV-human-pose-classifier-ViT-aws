@@ -1,6 +1,6 @@
 # Human Pose Classifier using Visual Transformers (ViT)
 
-This project implements a **human pose classifier** using Visual Transformers (ViT), covering the full pipeline from data preprocessing to real-world inference.
+This project implements a **human pose classifier** using Visual Transformers (ViT), covering the full required steps from data preprocessing to real-world inference.
 
 The best-performing model achieves high classification metrics:
 
@@ -15,7 +15,7 @@ The best-performing model achieves high classification metrics:
 
 </div>
 
-The model can be deployed on an **Amazon EC2 Instance**, and a live prototype is accessible via **Streamlit Server**: https://cv-human-pose-classifier-vit.streamlit.app/
+The model can be deployed on an **Amazon EC2 Instance**, and a live prototype is accessible via **Streamlit Server**: https://cv-human-pose-classifier-vit-aws.streamlit.app/
 
 <div align="center">
 
@@ -24,11 +24,24 @@ The model can be deployed on an **Amazon EC2 Instance**, and a live prototype is
 </div>
 
 ## Key Features & Technologies
-- **Dataset**: Uses the [Bingsu/Human_Action_Recognition](https://huggingface.co/datasets/Bingsu/Human_Action_Recognition) dataset loaded and split via **Hugging Face** library.
-- **Model**: **Visual Transformers (ViT)** for classifying images into 15 human action classes: *"calling", "clapping", "cycling", "dancing", "drinking", "eating", "fighting", "hugging", "laughing", "listening_to_music", "running", "sitting", "sleeping", "texting" and "using_laptop"*.
-- **AWS Integration**: Trained models are uploaded to **S3 Bucket** using **boto3**.
+- **Data Source**: Human action images are obtained from the [Bingsu/Human_Action_Recognition](https://huggingface.co/datasets/Bingsu/Human_Action_Recognition) dataset, loaded and preprocessed with the **Hugging Face** library.
+- **Model Architecture**: A **Vision Transformer (ViT)** fine-tuned to classify images into 15 action categories, such as *calling, clapping, cycling, dancing, drinking, eating, fighting, hugging, laughing, listening_to_music, running, sitting, sleeping, texting, using_laptop*.
+- **AWS Integration**: Trained models are automatically uploaded to **S3 Bucket** using **boto3**, enabling easy retrieval during deployment.
 - **Deployment**: Model can be served on **EC2 Instance**
 - **Web Interface**: Interactive inference via **FastAPI** backend and **Streamlit** frontend.
+
+## Pipelines Overview
+
+### Preprocessing Pipeline (To be completed)
+
+### Training Pipeline (To be completed)
+
+### Testing Pipeline (To be completed)
+
+## Inference using Fast-API / Streamlit Application (To be completed)
+PUT SLIDES HERE
+
+## Experimentations and Results (To be completed)
 
 ## AWS Services Configuration for Model Deployment
 1. Create a User using **AWS IAM Service** with the following permissions:
@@ -125,6 +138,30 @@ The application will be publicly accessible to anyone with the instance’s publ
 - To allow access from any IP address, set the Source  `to 0.0.0.0/0` on TCP port  `8501`.\
     ⚠️ Use  `0.0.0.0/0` only if you're aware of the security implications. For more restricted access, specify your own IP or a limited range.
 
+## Running the Pipelines
+
+There are four main execution modes, recommended in the following order:
+
+### Preprocess the Data (mandatory to collect the data)
+```bash
+python main.py preprocess_data
+```
+
+### Run the Training Pipeline (mandatory to find the best model)
+```bash
+python main.py train
+```
+
+### Run the Testing Pipeline (mandatory to push the best model to S3 Bucket)
+```bash
+python main.py test
+```
+
+### Run the Web Application
+```bash
+python main.py inference
+```
+
 ## Human Pose Classification & Beyond
 
 This classifier is designed not only for human action recognition but also as a **flexible image classification framework**. Thanks to its modular pipeline and configuration-driven design:
@@ -132,4 +169,4 @@ This classifier is designed not only for human action recognition but also as a 
 - **Configurable Pipelines**: Each stage of the workflow (preprocessing, training, testing and inference) is controlled by its own configuration file (`preprocessing_config.json`, `training_config.json`, `testing_config.json`, `inference_config.json`).
 - **No Code Changes Required**: You can adapt the application to new datasets or classification tasks simply by updating the configuration files.
 - **End-to-End Workflow**: From data preprocessing to model training, evaluation, and deployment, all steps are fully automated and modular.
-- **Rapid Deployment**: The same FastAPI + Streamlit interface can serve any trained model without modification, making it suitable for a wide range of computer vision tasks beyond human pose classification.
+- **Rapid Deployment**: The same FastAPI + Streamlit interface can serve any trained model without modification, making it suitable for a wide range of computer vision tasks.
