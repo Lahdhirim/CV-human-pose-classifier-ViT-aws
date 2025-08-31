@@ -1,6 +1,6 @@
 # Human Pose Classifier using Visual Transformers (ViT)
 
-This project implements a **human pose classifier** using Visual Transformers (ViT), covering the full required steps from data preprocessing to real-world inference.
+This project implements a **human pose classifier** using Visual Transformers (ViT), covering all required steps from data preprocessing to real-world inference.
 
 The best-performing model achieves high classification metrics:
 
@@ -64,7 +64,7 @@ The main steps of the data preprocessing pipeline are as follows:
 
 ### Training Pipeline ([src/training_pipeline.py](src/training_pipeline.py))
 
-The training process is fully configurable through the JSON config file [config/training_config.json](config/training_config.json), which is loaded using Pydantic schemas. This allows to change model, training parameters, and output directories without touching the core code.
+The training process is fully configurable through the JSON config file [config/training_config.json](config/training_config.json), which is loaded using Pydantic schemas. This allows changing model, training parameters, and output directories without touching the core code.
 
 | Config Section       | Field                           | Type  |Description                                                                 |
 |----------------------|---------------------------------|-------|---------------------------------------------------------------------|
@@ -147,7 +147,7 @@ The main steps of the testing pipeline are as follows:
    - If enabled, checks whether the evaluation metrics meet the configured thresholds.
    - If all conditions are satisfied, uploads the model directory to the specified S3 bucket.
 
-## Inference using Fast-API / Streamlit Application (To be completed)
+## Inference using FastAPI / Streamlit Application (To be completed)
 PUT SLIDES HERE
 
 ## Experimentations and Results (To be completed)
