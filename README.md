@@ -62,7 +62,54 @@ The main steps of the data preprocessing pipeline are as follows:
 
 4. Save to Disk: store the three subsets in the specified `output_dir` as `train/`, `val/`, and `test/`.
 
-### Training Pipeline (To be completed)
+### Training Pipeline
+
+The training process is fully configurable through the JSON config file [config/training_config.json](config/training_config.json), which is loaded using Pydantic schemas. This allows to change model, training parameters, and output directories without touching the core code.
+
+| Config Section       | Field                           | Type  |Description                                                                 |
+|----------------------|---------------------------------|-------|---------------------------------------------------------------------|
+| **directories_config** | `input_dir`                    | `str` |Path to load preprocessed `train/` and `val/` datasets                      |
+|                      | `clean_train_dir_before_training` | `bool` |Whether to clean checkpoints before training (default: `True`)              |
+|                      | `train_dir`                    | `str` |Directory to save training checkpoints                |
+|                      | `training_curve_path`          | `str` |Path to save training & validation loss/accuracy curves                     |
+|                      | `best_model_path`              | `str` |Path to save the best model after training                                  |
+| **model_params**      | `model_name`                   | `str` |Pretrained model name (e.g., `google/vit-base-patch16-224`)                 |
+|                      | `nb_layers_to_freeze`          | `int` |Number of ViT encoder layers to freeze (0–12) (default: `None`, i.e., train all encoder layers)                                |
+| **training_config** | `enable_gpu`                 | `bool` |Enable GPU training if available  (default: `False`)                                          |
+|                      | `learning_rate`                | `float` |Learning rate for the optimizer                          |
+|                      | `batch_size`                   | `int` |Training and validation batch size                                          |
+|                      | `num_train_epochs`             | `int` |Number of training epochs                                                 |
+
+The main steps of the train pipeline are as follows:
+1. **Load Preprocessed Data**
+   - Train and validation datasets are loaded from the specified `input_dir`.
+   - Checks that both sets contain the same label classes.
+   - Creates a mapping `label2id` and `id2label` for consistent training and evaluation.
+
+2. **Model Building**
+   - Loads the pretrained model (`ViT`) from Hugging Face.
+   - Optionally freezes the first `nb_layers_to_freeze` encoder layers.
+   - Initializes image preprocessing transforms (`RandomResizedCrop`, `ToTensor`, `Normalize`).
+   - Selects device (`CPU` or `GPU`).
+
+3. **Apply Transforms**
+   - Register the transformation steps in both train and validation sets (applied on-the-fly during training).
+
+4. **Training Arguments Setup**
+   - Configures `TrainingArguments` (optimizer, logging, evaluation & save strategy).
+   - Sets metric for best model selection (`accuracy`).
+
+5. **Training Loop**
+   - Cleans previous checkpoints if `clean_train_dir_before_training=True`.
+   - Trains the model with Hugging Face `Trainer`.
+
+6. **Metrics & Curves**
+   - Tracks train loss, validation loss, and validation accuracy.
+   - Plots training/validation curves and saves them to `training_curve_path`.
+
+7. **Save Artifacts**
+   - Saves the **best model** to `best_model_path`.
+   - Saves preprocessing transforms (`transforms.pkl`) for later inference and testing.
 
 ### Testing Pipeline (To be completed)
 

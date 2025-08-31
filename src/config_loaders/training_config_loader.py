@@ -5,7 +5,7 @@ from typing import Optional
 
 class DirectoriesConfig(BaseModel):
     input_dir: str = Field(
-        default="data", description="Directory to load train and validation datasets"
+        ..., description="Directory to load train and validation datasets"
     )
     clean_train_dir_before_training: Optional[bool] = Field(
         default=True,
@@ -36,11 +36,9 @@ class TrainingHyperparams(BaseModel):
     enable_gpu: Optional[bool] = Field(
         default=False, description="Whether to use GPU if available"
     )
-    learning_rate: float = Field(
-        default=1e-4, description="Learning rate for the optimizer"
-    )
-    batch_size: int = Field(default=16, description="Batch size for training")
-    num_train_epochs: int = Field(default=10, description="Number of training epochs")
+    learning_rate: float = Field(..., description="Learning rate for the optimizer")
+    batch_size: int = Field(..., description="Batch size for training")
+    num_train_epochs: int = Field(..., description="Number of training epochs")
 
 
 class TrainingConfig(BaseModel):
