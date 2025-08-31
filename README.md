@@ -23,15 +23,6 @@ The model can be deployed on an **Amazon EC2 Instance**, and a live prototype is
 
 </div>
 
-## Application: Human Pose Classification & Beyond
-
-This classifier is designed not only for human action recognition but also as a **flexible image classification framework**. Thanks to its modular pipeline and configuration-driven design:
-
-- **Configurable Pipelines**: Each stage of the workflow (preprocessing, training, testing and inference) is controlled by its own configuration file (`preprocessing_config.json`, `training_config.json`, `testing_config.json`, `inference_config.json`).
-- **No Code Changes Required**: You can adapt the application to new datasets or classification tasks simply by updating the configuration files.
-- **End-to-End Workflow**: From data preprocessing to model training, evaluation, and deployment, all steps are fully automated and modular.
-- **Rapid Deployment**: The same FastAPI + Streamlit interface can serve any trained model without modification, making it suitable for a wide range of computer vision tasks beyond human pose classification.
-
 ## Key Features & Technologies
 - **Dataset**: Uses the [Bingsu/Human_Action_Recognition](https://huggingface.co/datasets/Bingsu/Human_Action_Recognition) dataset loaded and split via **Hugging Face** library.
 - **Model**: **Visual Transformers (ViT)** for classifying images into 15 human action classes: *"calling", "clapping", "cycling", "dancing", "drinking", "eating", "fighting", "hugging", "laughing", "listening_to_music", "running", "sitting", "sleeping", "texting" and "using_laptop"*.
@@ -133,3 +124,12 @@ Each time the instance is rebooted, Streamlit will automatically launch the web 
 The application will be publicly accessible to anyone with the instance’s public IP address. Access can be controlled via the EC2 Security Group:
 - To allow access from any IP address, set the Source  `to 0.0.0.0/0` on TCP port  `8501`.\
     ⚠️ Use  `0.0.0.0/0` only if you're aware of the security implications. For more restricted access, specify your own IP or a limited range.
+
+## Human Pose Classification & Beyond
+
+This classifier is designed not only for human action recognition but also as a **flexible image classification framework**. Thanks to its modular pipeline and configuration-driven design:
+
+- **Configurable Pipelines**: Each stage of the workflow (preprocessing, training, testing and inference) is controlled by its own configuration file (`preprocessing_config.json`, `training_config.json`, `testing_config.json`, `inference_config.json`).
+- **No Code Changes Required**: You can adapt the application to new datasets or classification tasks simply by updating the configuration files.
+- **End-to-End Workflow**: From data preprocessing to model training, evaluation, and deployment, all steps are fully automated and modular.
+- **Rapid Deployment**: The same FastAPI + Streamlit interface can serve any trained model without modification, making it suitable for a wide range of computer vision tasks beyond human pose classification.
