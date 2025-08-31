@@ -32,7 +32,35 @@ The model can be deployed on an **Amazon EC2 Instance**, and a live prototype is
 
 ## Pipelines Overview
 
-### Preprocessing Pipeline (To be completed)
+### Preprocessing Pipeline ([src/preprocessing_pipeline.py](src/preprocessing_pipeline.py))
+
+The preprocessing stage is designed to be fully configurable through the JSON file [config/preprocessing_config.json](config/preprocessing_config.json). This allows the dataset loading and splitting process to be easily adapted without modifying the code.
+
+| Parameter                  | Type    | Default                               | Description |
+|-----------------------------|---------|---------------------------------------|-------------|
+| `huggingface_dataset_name` | `str`   | `"Bingsu/Human_Action_Recognition"`   | Name of the dataset on Hugging Face Hub. |
+| `test_size`                | `float` | `0.2`                                 | Proportion of the dataset reserved for testing. Must be strictly between 0 and 1. |
+| `validation_size`          | `float` | `0.2`                                 | Proportion of the training set reserved for validation. Must be strictly between 0 and 1. |
+| `output_dir`               | `str`   | `"data"` | Directory where the processed splits will be saved. |
+
+The main steps of the data preprocessing pipeline are as follows:
+1. Download the dataset from Hugging Face using the name specified in the configuration
+
+2. Train/Validation/Test Split:
+    - First split: dataset is divided into training and testing sets (`test_size` ratio).
+
+    - Second split: training set is further divided into training and validation subsets (`validation_size` ratio).
+
+    - Ensures that all subsets (train, validation, test) contain the same label classes to avoid imbalance issues.
+
+    > ⚠️ **Note (August 2025):**
+    > The official test set of the `Bingsu/Human_Action_Recognition` dataset is currently **erroneous**.
+    > It only contains a single class (`"calling"`) but with images from all 15 classes.
+    > For this reason, the test set in our pipeline is **re-sampled from the training split** to ensure proper evaluation.
+
+3. Dataset Description: prints a statistical overview of each split (number of samples per class, total size, etc.).
+
+4. Save to Disk: store the three subsets in the specified `output_dir` as `train/`, `val/`, and `test/`.
 
 ### Training Pipeline (To be completed)
 
