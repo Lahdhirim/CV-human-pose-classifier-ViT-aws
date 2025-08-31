@@ -7,7 +7,9 @@ class PushCondition(BaseModel):
     metric: str = Field(
         ..., description="Metric name to evaluate (e.g. accuracy, precision)"
     )
-    threshold: float = Field(..., description="Threshold value to trigger model push")
+    threshold: float = Field(
+        ..., ge=0, le=1, description="Threshold value to trigger model push"
+    )
 
 
 class PushModelS3Config(BaseModel):

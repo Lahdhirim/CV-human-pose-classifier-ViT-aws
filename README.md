@@ -62,7 +62,7 @@ The main steps of the data preprocessing pipeline are as follows:
 
 4. Save to Disk: store the three subsets in the specified `output_dir` as `train/`, `val/`, and `test/`.
 
-### Training Pipeline
+### Training Pipeline ([src/training_pipeline.py](src/training_pipeline.py))
 
 The training process is fully configurable through the JSON config file [config/training_config.json](config/training_config.json), which is loaded using Pydantic schemas. This allows to change model, training parameters, and output directories without touching the core code.
 
@@ -107,11 +107,45 @@ The main steps of the train pipeline are as follows:
    - Tracks train loss, validation loss, and validation accuracy.
    - Plots training/validation curves and saves them to `training_curve_path`.
 
-7. **Save Artifacts**
+7. **Save the pipeline**
    - Saves the **best model** to `best_model_path`.
    - Saves preprocessing transforms (`transforms.pkl`) for later inference and testing.
 
-### Testing Pipeline (To be completed)
+### Testing Pipeline ([src/testing_pipeline.py](src/testing_pipeline.py))
+
+The testing process is fully configurable through the JSON config file [config/testing_config.json](config/testing_config.json), which is loaded using Pydantic schemas. This allows changing model pushing conditions without modifying the core code.
+
+| Parameter                              | Type | Description                                                                                     |
+|----------------------------------------|------|------------------------------------------------------------------------------------------|
+| `input_dir`                       | `str` |Path to load the preprocessed test dataset                                                      |
+| `trained_model_path`                   | `str` |Path to the trained model to be loaded for testing                                             |                                    |
+| `metrics_output_file`                  | `str` |File path to save evaluation results (Excel)            |
+| `push_model_s3.enabled`                | `bool` |If `true`, allows pushing the model to an S3 bucket if defined conditions are met              |
+| `push_model_s3.conditions`             | `list` |List of metric-based conditions that must be satisfied to trigger a model push                 |
+| `push_model_s3.conditions.metric`    | `str` |Name of the metric to check (e.g., `accuracy`, `precision`)                                    |
+| `push_model_s3.conditions.threshold` | `float` |Minimum required value for the metric to allow model upload to S3 Bucket                             |
+| `push_model_s3.bucket_name`            | `str` |Name of the S3 bucket where the model will be uploaded                                         |
+| `push_model_s3.prefix`                 | `str` |Folder or path prefix in the bucket under which the model will be stored                      |
+
+The main steps of the testing pipeline are as follows:
+1. **Load Test Data**: loads the preprocessed test dataset from the specified `input_dir`.
+
+2. **Load Model and Transforms**
+   - Loads the trained ViT model from `trained_model_path`.
+   - Loads the preprocessing transforms (`transforms.pkl`) saved during training.
+
+3. **Predictions**
+   - Calculates predictions on the entire test dataset.
+   - Collects both predicted and ground truth labels.
+
+4. **Metrics & Reporting**
+   - Computes global metrics (accuracy, precision, recall, F1-score).
+   - Generates confusion matrix and per-class accuracy.
+   - Saves all results into the Excel file defined by `metrics_output_file`. An example output file can be found in [data/output](data/output) folder.
+
+5. **Model Push to S3 (Optional)**
+   - If enabled, checks whether the evaluation metrics meet the configured thresholds.
+   - If all conditions are satisfied, uploads the model directory to the specified S3 bucket.
 
 ## Inference using Fast-API / Streamlit Application (To be completed)
 PUT SLIDES HERE
