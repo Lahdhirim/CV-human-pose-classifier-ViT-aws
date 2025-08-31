@@ -1,12 +1,43 @@
-# Human Pose Classifier using Visual Transformers (ViT) (Under Construction)
+# Human Pose Classifier using Visual Transformers (ViT)
 
-Public link: https://cv-human-pose-classifier-vit.streamlit.app/
+This project implements a **human pose classifier** using Visual Transformers (ViT), covering the full pipeline from data preprocessing to real-world inference.
+
+The best-performing model achieves high classification metrics:
+
+<div align="center">
+
+| Metric | Value |
+| --------- | ------ |
+| Accuracy | 0.791 |
+| Precision (weighted) | 0.792 |
+| Recall (weighted) | 0.791 |
+| F1-Score (weighted) | 0.790 |
+
+</div>
+
+The model can be deployed on an **Amazon EC2 Instance**, and a live prototype is accessible via **Streamlit Server**: https://cv-human-pose-classifier-vit.streamlit.app/
 
 <div align="center">
 
 ![Demo](assets/demo.gif)
 
 </div>
+
+## Application: Human Pose Classification & Beyond
+
+This classifier is designed not only for human action recognition but also as a **flexible image classification framework**. Thanks to its modular pipeline and configuration-driven design:
+
+- **Configurable Pipelines**: Each stage of the workflow (preprocessing, training, testing and inference) is controlled by its own configuration file (`preprocessing_config.json`, `training_config.json`, `testing_config.json`, `inference_config.json`).
+- **No Code Changes Required**: You can adapt the application to new datasets or classification tasks simply by updating the configuration files.
+- **End-to-End Workflow**: From data preprocessing to model training, evaluation, and deployment, all steps are fully automated and modular.
+- **Rapid Deployment**: The same FastAPI + Streamlit interface can serve any trained model without modification, making it suitable for a wide range of computer vision tasks beyond human pose classification.
+
+## Key Features & Technologies
+- **Dataset**: Uses the [Bingsu/Human_Action_Recognition](https://huggingface.co/datasets/Bingsu/Human_Action_Recognition) dataset loaded and split via **Hugging Face** library.
+- **Model**: **Visual Transformers (ViT)** for classifying images into 15 human action classes: *"calling", "clapping", "cycling", "dancing", "drinking", "eating", "fighting", "hugging", "laughing", "listening_to_music", "running", "sitting", "sleeping", "texting" and "using_laptop"*.
+- **AWS Integration**: Trained models are uploaded to **S3 Bucket** using **boto3**.
+- **Deployment**: Model can be served on **EC2 Instance**
+- **Web Interface**: Interactive inference via **FastAPI** backend and **Streamlit** frontend.
 
 ## AWS Services Configuration for Model Deployment
 1. Create a User using **AWS IAM Service** with the following permissions:
@@ -24,7 +55,7 @@ Public link: https://cv-human-pose-classifier-vit.streamlit.app/
 
 4. Create an EC2 instance with the following specifications:
     - **AMI**: Deep Learning OSS Nvidia Driver AMI GPU PyTorch 2.7 (Ubuntu 22.04)
-    - **Instance type**: `t3.medium` (`t2.micro` could result in a timeout during the execution of the Streamlit application)
+    - **Instance type**: `t3.medium`
     - **Key Pair**: Use the key pair you downloaded to connect via SSH
     - **Security Group**:
         - Allow inbound rules for ports: `22`, `80`, `8501`, `8502` (all TCP)
