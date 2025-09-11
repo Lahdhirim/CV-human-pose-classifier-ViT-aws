@@ -180,7 +180,7 @@ PUT SLIDES HERE
         mkdir mlops
         cd mlops
         ```
-    - Clone your GitHub repo:
+    - Clone the GitHub repo:
         ```bash
         git clone https://github.com/Lahdhirim/CV-human-pose-classifier-ViT-aws.git
         cd CV-human-pose-classifier-ViT-aws
