@@ -246,7 +246,25 @@ The application will be publicly accessible to anyone with the instance’s publ
 - To allow access from any IP address, set the Source  `to 0.0.0.0/0` on TCP port  `8501`.\
     ⚠️ Use  `0.0.0.0/0` only if you're aware of the security implications. For more restricted access, specify your own IP or a limited range.
 
-## Alternative Deployment (Docker-Based)(To be completed)
+## Alternative Deployment (Docker-Based)
+This project can be deployed easily using Docker, which removes the need for manual environment setup, dependency installation, or complex startup scripts. This is the recommended deployment method for both local and cloud environments:
+1. Clone the GitHub repo:
+
+    ```bash
+    git clone https://github.com/Lahdhirim/CV-human-pose-classifier-ViT-aws.git
+    cd CV-human-pose-classifier-ViT-aws
+    ```
+2. Build and run the containers:
+
+    ```bash
+    docker compose up --build -d
+    ```
+
+3. Access the application:
+    - Streamlit UI:
+    `http://<PUBLIC_IP>:8501`
+    - FastAPI docs:
+    `http://<PUBLIC_IP>:8502/docs`
 
 
 ## Running the Pipelines
