@@ -16,3 +16,4 @@ torchvision>=0.15.0
 tqdm==4.67.1
 transformers==4.55.2
 uvicorn==0.35.0
+colorama==0.4.6
