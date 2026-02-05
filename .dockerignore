@@ -1,0 +1,12 @@
+.git
+__pycache__
+*.pyc
+data/
+downloaded_models/
+archive/
+assets/
+figs/
+train_dir/
+.gitignore
+.pre-commit-config.yaml
+LICENSE

@@ -2,14 +2,15 @@ import streamlit as st
 import requests
 from PIL import Image
 import matplotlib.pyplot as plt
+import os
 
 # URL of FastAPI endpoint
-API_URL = "http://localhost:8502/api/v1/pose_classifier"
+API_URL = os.getenv("API_URL", "http://localhost:8502/api/v1/pose_classifier")
 
 st.set_page_config(page_title="Human Pose Classification", page_icon="🧍")
 st.title("🧍Human Pose Classification App")
 
-# --- Choose input method ---
+# Choose input method
 input_method = st.radio("Choose input method:", ["Image URL", "Upload File"])
 
 image_url = None

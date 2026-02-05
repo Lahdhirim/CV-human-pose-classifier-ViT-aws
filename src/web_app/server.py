@@ -83,7 +83,7 @@ def pose_classifier(
 
     start = time.time()
 
-    # --- Case 1: Image from URL ---
+    # Image from URL
     if url:
 
         try:
@@ -103,7 +103,7 @@ def pose_classifier(
                 status_code=500, detail=f"Error processing image {url}: {e}"
             )
 
-    # --- Case 2: Image from uploaded file ---
+    # Image from uploaded file
     elif file:
         try:
             img = Image.open(file.file).convert("RGB")

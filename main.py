@@ -1,5 +1,7 @@
 import argparse
 import subprocess
+import sys
+import time
 
 # Import config loaders and pipeline classes for each task
 from src.config_loaders.preprocessing_config_loader import load_preprocessing_config
@@ -49,8 +51,13 @@ if __name__ == "__main__":
         testing_pipeline.run()
 
     elif args.mode == "inference":
-        # Run the Streamlit app
-        subprocess.run(["streamlit", "run", "src/web_app/streamlit_app.py"])
+        print("Starting FastAPI server...")
+        fastapi_process = subprocess.Popen([sys.executable, "src/web_app/server.py"])
+
+        time.sleep(5)
+
+        print("Starting Streamlit interface...")
+        subprocess.run(["streamlit", "run", "src/web_app/interface.py"])
 
     else:
         print(

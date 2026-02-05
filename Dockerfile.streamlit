@@ -1,0 +1,11 @@
+# Dockerfile.streamlit
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY . .
+RUN pip install --no-cache-dir -r requirements.txt
+
+ENV API_URL=http://human_pose_api:8502/api/v1/pose_classifier
+
+CMD ["streamlit", "run", "src/web_app/interface.py", "--server.port=8501", "--server.address=0.0.0.0"]

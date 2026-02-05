@@ -4,3 +4,5 @@ data/test/data-00000-of-00001.arrow
 train_dir
 __pycache__/
 *.pyc
+archive/
+downloaded_models/

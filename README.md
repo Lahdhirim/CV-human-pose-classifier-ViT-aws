@@ -148,7 +148,6 @@ The main steps of the testing pipeline are as follows:
    - If all conditions are satisfied, uploads the model directory to the specified S3 bucket.
 
 ## Inference using FastAPI / Streamlit Application (To be completed)
-PUT SLIDES HERE
 
 ## Experimentations and Results (To be completed)
 
@@ -246,6 +245,9 @@ Each time the instance is rebooted, Streamlit will automatically launch the web 
 The application will be publicly accessible to anyone with the instance’s public IP address. Access can be controlled via the EC2 Security Group:
 - To allow access from any IP address, set the Source  `to 0.0.0.0/0` on TCP port  `8501`.\
     ⚠️ Use  `0.0.0.0/0` only if you're aware of the security implications. For more restricted access, specify your own IP or a limited range.
+
+## Alternative Deployment (Docker-Based)
+
 
 ## Running the Pipelines
 

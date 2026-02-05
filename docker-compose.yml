@@ -1,0 +1,24 @@
+version: "3.9"
+
+services:
+  human_pose_api:
+    build:
+      context: .
+      dockerfile: Dockerfile.fastapi
+    container_name: human_pose_api
+    ports:
+      - "8502:8502"
+    restart: always
+
+  human_pose_ui:
+    build:
+      context: .
+      dockerfile: Dockerfile.streamlit
+    container_name: human_pose_ui
+    ports:
+      - "8501:8501"
+    depends_on:
+      - human_pose_api
+    environment:
+      - API_URL=http://human_pose_api:8502/api/v1/pose_classifier
+    restart: always
