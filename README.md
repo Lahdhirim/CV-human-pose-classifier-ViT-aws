@@ -246,7 +246,7 @@ The application will be publicly accessible to anyone with the instance’s publ
 - To allow access from any IP address, set the Source  `to 0.0.0.0/0` on TCP port  `8501`.\
     ⚠️ Use  `0.0.0.0/0` only if you're aware of the security implications. For more restricted access, specify your own IP or a limited range.
 
-## Alternative Deployment (Docker-Based)
+## Alternative Deployment (Docker-Based)(To be completed)
 
 
 ## Running the Pipelines
