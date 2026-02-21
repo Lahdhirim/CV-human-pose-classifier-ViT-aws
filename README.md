@@ -169,7 +169,7 @@ However, it also leads to longer training time and a higher risk of overfitting 
 
 ### 2. Performance Analysis
 
-The confusion matrix ([data/output/performance_metrics_15_2.xlsx](data/output/performance_metrics_15_2.xlsx)) reveals that most classes are correctly classified, but several activities are frequently confused due to visual similarity and overlapping contexts.
+The confusion matrix of the **test data predictions** ([data/output/performance_metrics_15_2.xlsx](data/output/performance_metrics_15_2.xlsx)) reveals that most classes are correctly classified, but several activities are frequently confused due to visual similarity and overlapping contexts.
 
 In particular, **calling**, **texting**, **using laptop**, and **listening to music** show mutual confusion. These actions often involve similar postures (e.g., holding a phone, sitting, minimal body motion), which makes them harder to distinguish visually. Similar confusion is also observed between **running** and **cycling**, as both involve fast motion and similar body dynamics in outdoor scenes. Likewise, **dancing** and **fighting** are occasionally confused, likely due to similar arm movements and high-energy gestures.
 To test this behavior, feel free to use the following demo: https://cv-human-pose-classifier-vit-aws-c.streamlit.app/
