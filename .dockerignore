@@ -10,3 +10,4 @@ train_dir/
 .gitignore
 .pre-commit-config.yaml
 LICENSE
+streamlit_deployment.py

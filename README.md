@@ -147,7 +147,11 @@ The main steps of the testing pipeline are as follows:
    - If enabled, checks whether the evaluation metrics meet the configured thresholds.
    - If all conditions are satisfied, uploads the model directory to the specified S3 bucket.
 
-## Inference using FastAPI / Streamlit Application (To be completed)
+## Inference using FastAPI / Streamlit Application
+
+<div style="text-align: center;">
+    <img src="assets/architecture.jpg" alt="CV" width="950", height="550"/>
+</div>
 
 ## Experimentations and Results (To be completed)
 
