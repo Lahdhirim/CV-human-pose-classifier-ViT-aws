@@ -15,7 +15,7 @@ The best-performing model achieves high classification metrics:
 
 </div>
 
-The model can be deployed on an **Amazon EC2 Instance**, and a live prototype is accessible via **Streamlit Server**: https://cv-human-pose-classifier-vit-aws.streamlit.app/
+The model can be deployed on an **Amazon EC2 Instance**, and a live prototype is accessible via **Streamlit Server**: https://cv-human-pose-classifier-vit-aws-b.streamlit.app/
 
 <div align="center">
 
