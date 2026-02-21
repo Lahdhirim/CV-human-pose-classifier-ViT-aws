@@ -1,5 +1,5 @@
 """
-Specific file required for streamlit prototype deployment
+Specific file required only for streamlit prototype deployment
 """
 
 import streamlit as st

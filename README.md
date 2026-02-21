@@ -15,7 +15,7 @@ The best-performing model achieves high classification metrics:
 
 </div>
 
-The model can be deployed on an **Amazon EC2 Instance**, and a live prototype is accessible via **Streamlit Server**: https://cv-human-pose-classifier-vit-aws-b.streamlit.app/
+The model can be deployed on an **Amazon EC2 Instance**, and a live prototype is accessible via **Streamlit Server**: https://cv-human-pose-classifier-vit-aws-c.streamlit.app/
 
 <div align="center">
 
@@ -152,8 +152,6 @@ The main steps of the testing pipeline are as follows:
 <div style="text-align: center;">
     <img src="assets/architecture.jpg" alt="CV" width="950", height="550"/>
 </div>
-
-## Experimentations and Results (To be completed)
 
 ## AWS Services Configuration for Model Deployment
 1. Create a User using **AWS IAM Service** with the following permissions:
