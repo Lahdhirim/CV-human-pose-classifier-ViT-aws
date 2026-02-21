@@ -167,9 +167,9 @@ As shown in the performance curve, the highest accuracy is obtained when freezin
 The observed trend shows that freezing too many layers leads to a drop in performance and this is mainly due to the limited adaptability of the model to the target data. Freezing fewer layers increases the model’s capacity to fit the dataset.
 However, it also leads to longer training time and a higher risk of overfitting (see train/validation curves in [figs](figs) folder), since the network can more easily memorize dataset-specific patterns instead of learning generalizable features.
 
-### 2. Performance Analysis
+### 2. Performance Analysis (Test Set)
 
-The confusion matrix of the **test data predictions** ([data/output/performance_metrics_15_2.xlsx](data/output/performance_metrics_15_2.xlsx)) reveals that most classes are correctly classified, but several activities are frequently confused due to visual similarity and overlapping contexts.
+The confusion matrix ([data/output/performance_metrics_15_2.xlsx](data/output/performance_metrics_15_2.xlsx)) reveals that most classes are correctly classified, but several activities are frequently confused due to visual similarity and overlapping contexts.
 
 In particular, **calling**, **texting**, **using laptop**, and **listening to music** show mutual confusion. These actions often involve similar postures (e.g., holding a phone, sitting, minimal body motion), which makes them harder to distinguish visually. Similar confusion is also observed between **running** and **cycling**, as both involve fast motion and similar body dynamics in outdoor scenes. Likewise, **dancing** and **fighting** are occasionally confused, likely due to similar arm movements and high-energy gestures.
 To test this behavior, feel free to use the following demo: https://cv-human-pose-classifier-vit-aws-c.streamlit.app/
