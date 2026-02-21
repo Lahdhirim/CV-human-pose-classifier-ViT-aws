@@ -8,6 +8,8 @@ services:
     container_name: human_pose_api
     ports:
       - "8502:8502"
+    volumes:
+      - ~/.aws:/root/.aws:ro
     restart: always
 
   human_pose_ui:
@@ -21,4 +23,6 @@ services:
       - human_pose_api
     environment:
       - API_URL=http://human_pose_api:8502/api/v1/pose_classifier
+    volumes:
+      - ~/.aws:/root/.aws:ro
     restart: always
