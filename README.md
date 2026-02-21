@@ -8,10 +8,10 @@ The best-performing model achieves high classification metrics:
 
 | Metric | Value |
 | --------- | ------ |
-| Accuracy | 0.791 |
-| Precision (weighted) | 0.792 |
-| Recall (weighted) | 0.791 |
-| F1-Score (weighted) | 0.790 |
+| Accuracy | 0.796 |
+| Precision (weighted) | 0.801 |
+| Recall (weighted) | 0.796 |
+| F1-Score (weighted) | 0.798 |
 
 </div>
 
@@ -151,6 +151,40 @@ The main steps of the testing pipeline are as follows:
 
 <div style="text-align: center;">
     <img src="assets/architecture.jpg" alt="CV" width="950", height="550"/>
+</div>
+
+## Experiments and Performance Analysis
+
+### 1. Impact of Freezing Layers (Fine-Tuning Strategy)
+
+To identify the best-performing model, the impact of the number of frozen layers during fine-tuning was analyzed.
+As shown in the performance curve, the highest accuracy is obtained when freezing **2 layers**, while keeping the rest of the network trainable. This configuration provides a good trade-off between preserving pretrained features and adapting to the target dataset.
+
+<div style="text-align: center;">
+    <img src="assets/nb_layers.png" alt="Impact of freezing layers" width="400" height="250"/>
+</div>
+
+The observed trend shows that freezing too many layers leads to a drop in performance and this is mainly due to the limited adaptability of the model to the target data. Freezing fewer layers increases the model’s capacity to fit the dataset.
+However, it also leads to longer training time and a higher risk of overfitting (see train/validation curves in [figs](figs) folder), since the network can more easily memorize dataset-specific patterns instead of learning generalizable features.
+
+### 2. Performance Analysis
+
+The confusion matrix ([data/output/performance_metrics_15_2.xlsx](data/output/performance_metrics_15_2.xlsx)) reveals that most classes are correctly classified, but several activities are frequently confused due to visual similarity and overlapping contexts.
+
+In particular, **calling**, **texting**, **using laptop**, and **listening to music** show mutual confusion. These actions often involve similar postures (e.g., holding a phone, sitting, minimal body motion), which makes them harder to distinguish visually. Similar confusion is also observed between **running** and **cycling**, as both involve fast motion and similar body dynamics in outdoor scenes. Likewise, **dancing** and **fighting** are occasionally confused, likely due to similar arm movements and high-energy gestures.
+To test this behavior, feel free to use the following demo: https://cv-human-pose-classifier-vit-aws-c.streamlit.app/
+
+Overall, the lowest-performing classes in terms of accuracy are:
+- **using_laptop** (69.9%)
+- **calling** (71.1%)
+- **sitting** (71.6%)
+- **texting** (72.5%)
+- **listening_to_music** (72.9%)
+
+These classes correspond to activities with subtle visual differences, highlighting the difficulty of fine-grained action recognition when motions are small or visually ambiguous.
+
+<div style="text-align: center;">
+    <img src="assets/confusion_matrix.png" alt="Confusion matrix" width="800" height="250"/>
 </div>
 
 ## AWS Services Configuration for Model Deployment
